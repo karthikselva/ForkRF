@@ -1,0 +1,45 @@
+
+@relation kdd_cup_1999
+@attribute duration numeric
+@attribute protocol_type {tcp,udp,icmp}
+@attribute service {vmnet,smtp,ntp_u,shell,kshell,aol,imap4,urh_i,netbios_ssn,tftp_u,mtp,uucp,nnsp,echo,tim_i,ssh,iso_tsap,time,netbios_ns,systat,hostnames,login,efs,supdup,http_8001,courier,ctf,finger,nntp,ftp_data,red_i,ldap,http,ftp,pm_dump,exec,klogin,auth,netbios_dgm,other,link,X11,discard,private,remote_job,IRC,daytime,pop_3,pop_2,gopher,sunrpc,name,rje,domain,uucp_path,http_2784,Z39_50,domain_u,csnet_ns,whois,eco_i,bgp,sql_net,printer,telnet,ecr_i,urp_i,netstat,http_443,harvest}
+@attribute flag {RSTR,S3,SF,RSTO,SH,OTH,S2,RSTOS0,S1,S0,REJ}
+@attribute src_bytes numeric
+@attribute dst_bytes numeric
+@attribute land {1,0}
+@attribute wrong_fragment numeric
+@attribute urgent numeric
+@attribute hot numeric
+@attribute num_failed_logins numeric
+@attribute logged_in {1,0}
+@attribute lnum_compromised numeric
+@attribute lroot_shell numeric
+@attribute lsu_attempted numeric
+@attribute lnum_root numeric
+@attribute lnum_file_creations numeric
+@attribute lnum_shells numeric
+@attribute lnum_access_files numeric
+@attribute lnum_outbound_cmds numeric
+@attribute is_host_login {1,0}
+@attribute is_guest_login {1,0}
+@attribute count numeric
+@attribute srv_count numeric
+@attribute serror_rate numeric
+@attribute srv_serror_rate numeric
+@attribute rerror_rate numeric
+@attribute srv_rerror_rate numeric
+@attribute same_srv_rate numeric
+@attribute diff_srv_rate numeric
+@attribute srv_diff_host_rate numeric
+@attribute dst_host_count numeric
+@attribute dst_host_srv_count numeric
+@attribute dst_host_same_srv_rate numeric
+@attribute dst_host_diff_srv_rate numeric
+@attribute dst_host_same_src_port_rate numeric
+@attribute dst_host_srv_diff_host_rate numeric
+@attribute dst_host_serror_rate numeric
+@attribute dst_host_srv_serror_rate numeric
+@attribute dst_host_rerror_rate numeric
+@attribute dst_host_srv_rerror_rate numeric
+@attribute label {back,teardrop,loadmodule,neptune,rootkit,phf,satan,buffer_overflow,ftp_write,land,spy,ipsweep,multihop,smurf,pod,perl,warezclient,nmap,imap,warezmaster,portsweep,normal,guess_passwd}
+@data
