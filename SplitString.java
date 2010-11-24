@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.*;
 
 public class SplitString{
 
@@ -20,7 +21,8 @@ public static void main(String args[]) throws Throwable
 	    
 		
 		if(line_count==0||line_count==lines){
-		
+	
+				
 			if(out!=null){ 
 				out.close();
 				out=null;
@@ -35,13 +37,17 @@ public static void main(String args[]) throws Throwable
 			label=new BufferedReader(new FileReader("Label.txt"));
 			while((labeler=label.readLine())!=null){
 			out.println(labeler);
+			
 			}
 		out.println("\n");
 			line_count=1;
 			}
+			// if loop removes missing data
+		
 			ch=ch.substring(0,ch.length()-1);
 			out.println(ch);
 			 line_count++;
+			
 		}
 		long end_time=System.currentTimeMillis();
 		
