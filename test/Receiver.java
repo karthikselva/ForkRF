@@ -23,9 +23,10 @@ pw=new PrintWriter("output/kddcup"+count+".arff");
 System.out.println(" Receiving  file "+"kddcup"+count+".arff"+" ..... ");
 count++;
 }
+else{
 pw.println(data);
 pw.flush();
-
+}
 }
 
 
