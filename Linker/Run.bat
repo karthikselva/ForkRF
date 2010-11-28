@@ -4,3 +4,6 @@ javah -jni HelloWorld
 
 cl -If:\Java\jdk1.6.0_06\include -If:\Java\jdk1.6.0_06\include\win32 -MD -LD HelloWorld.c -FeHelloWorld.dll
 java HelloWorld
+
+
+nvcc -If:\Java\jdk1.6.0_06\include -If:\Java\jdk1.6.0_06\include\win32  -LD HelloWorld.c -FeHelloWorld.dll

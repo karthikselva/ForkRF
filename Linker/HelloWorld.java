@@ -1,10 +1,11 @@
  class HelloWorld {
-     private native void print();
-     private native int add(int a,int b);
-     public static void main(String[] args) {
-         System.out.println(new HelloWorld().add(5,6));
+     private native void callCuda(int numblocks , int b1, int b2);
+     public static void main(String[] args) 
+	{
+         new HelloWorld().callCuda(1,10,10);
+         System.out.println(" In java Called ");
      }
      static {
-         System.loadLibrary("HelloWorld");
+         System.loadLibrary("a");
      }
  }
