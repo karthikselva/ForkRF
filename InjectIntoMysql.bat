@@ -1,0 +1,1 @@
+java -cp ".;mysql.jar" FileToDB kddcup.data.corrected

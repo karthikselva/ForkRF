@@ -1,13 +1,14 @@
 
 import java.sql.*;
-
-public class Jdbc10 {
+import java.util.*;
+import java.io.*;
+public class FileToDB {
   public static void main(String args[]){
  
     try {
       Statement stmt;
       ResultSet rs;
-
+ long start_time=System.currentTimeMillis();
       //Register the JDBC driver for MySQL.
       Class.forName("com.mysql.jdbc.Driver");
 
@@ -15,7 +16,7 @@ public class Jdbc10 {
       // database named JunkDB on the localhost
       // with the default port number 3306.
       String url =
-            "jdbc:mysql://localhost:3306/JunkDB";
+            "jdbc:mysql://localhost:3306/KDD";
 
       //Get a connection to the database for a
       // user named auser with the password
@@ -23,7 +24,7 @@ public class Jdbc10 {
       // backwards.
       Connection con =
                      DriverManager.getConnection(
-                        url,"auser", "drowssap");
+                        url,"root", "123456");
 
       //Display URL and connection information
       System.out.println("URL: " + url);
@@ -31,83 +32,37 @@ public class Jdbc10 {
 
       //Get a Statement object
       stmt = con.createStatement();
+stmt.execute(" drop table kdd_cup_1999 ;");
+stmt.executeUpdate("create table kdd_cup_1999 ( duration int, protocol_type varchar(5), service varchar(10) , flag varchar(10) , src_bytes int ,dst_bytes int , land int , wrong_fragment int , urgent int , hot int , num_failed_logins int, logged_in int , lnum_compromised int , lroot_shell int , lsu_attempted int ,lnum_root int ,lnum_file_creations int ,lnum_shells int ,lnum_access_files int ,lnum_outbound_cmds int ,is_host_login int, is_guest_login int , count int,srv_count int ,serror_rate int, srv_serror_rate int , rerror_rate int ,srv_rerror_rate int , same_srv_rate int , diff_srv_rate int , srv_diff_host_rate int , dst_host_count int , dst_host_srv_count int , dst_host_same_srv_rate int , dst_host_diff_srv_rate int , dst_host_same_src_port_rate int, dst_host_srv_diff_host_rate int , dst_host_serror_rate int , dst_host_srv_serror_rate int , dst_host_rerror_rate int , dst_host_srv_rerror_rate int , label varchar(20) );");
+	  
+	  // author : karthik selvakumar 
+	  String toSplit=args[0];
+ 	BufferedReader br=new BufferedReader(new FileReader(toSplit));
+	  PrintWriter out=null;
+	int line_count=0;
+	String ch=null;
+	String name=null;
+	int split_count=0;
+	String insert=null;
+	System.out.println(" Inserting KDD data please wait .... It may take several hours  .... ");
+	while((ch=br.readLine())!=null)
+	{
+	    insert=" insert into kdd_cup_1999 values (";
+		StringTokenizer tuple=new StringTokenizer(ch,",");
+		while(tuple.hasMoreTokens()){
+		insert+="\'"+tuple.nextToken()+"\',";
+		}
+		insert=insert.substring(0,insert.length()-1);
+		insert+=");";	
+		//System.out.println(insert);
+		stmt.executeUpdate(insert);
+		}
 
-      //As a precaution, delete myTable if it
-      // already exists as residue from a
-      // previous run.  Otherwise, if the table
-      // already exists and an attempt is made
-      // to create it, an exception will be
-      // thrown.
-      try{
-        stmt.executeUpdate("DROP TABLE myTable");
-      }catch(Exception e){
-        System.out.print(e);
-        System.out.println(
-                  "No existing table to delete");
-      }//end catch
-
-      //Create a table in the database named
-      // myTable.
-      stmt.executeUpdate(
-            "CREATE TABLE myTable(test_id int," +
-                  "test_val char(15) not null)");
-
-      //Insert some values into the table
-      stmt.executeUpdate(
-                "INSERT INTO myTable(test_id, " +
-                    "test_val) VALUES(1,'One')");
-      stmt.executeUpdate(
-                "INSERT INTO myTable(test_id, " +
-                    "test_val) VALUES(2,'Two')");
-      stmt.executeUpdate(
-                "INSERT INTO myTable(test_id, " +
-                  "test_val) VALUES(3,'Three')");
-      stmt.executeUpdate(
-                "INSERT INTO myTable(test_id, " +
-                   "test_val) VALUES(4,'Four')");
-      stmt.executeUpdate(
-                "INSERT INTO myTable(test_id, " +
-                   "test_val) VALUES(5,'Five')");
-
-      //Get another statement object initialized
-      // as shown.
-      stmt = con.createStatement(
-               ResultSet.TYPE_SCROLL_INSENSITIVE,
-                     ResultSet.CONCUR_READ_ONLY);
-
-      //Query the database, storing the result
-      // in an object of type ResultSet
-      rs = stmt.executeQuery("SELECT * " +
-                "from myTable ORDER BY test_id");
-
-      //Use the methods of class ResultSet in a
-      // loop to display all of the data in the
-      // database.
-      System.out.println("Display all results:");
-      while(rs.next()){
-        int theInt= rs.getInt("test_id");
-        String str = rs.getString("test_val");
-        System.out.println("\ttest_id= " + theInt
-                             + "\tstr = " + str);
-      }//end while loop
-
-      //Display the data in a specific row using
-      // the rs.absolute method.
-      System.out.println(
-                        "Display row number 2:");
-      if( rs.absolute(2) ){
-        int theInt= rs.getInt("test_id");
-        String str = rs.getString("test_val");
-        System.out.println("\ttest_id= " + theInt
-                             + "\tstr = " + str);
-      }//end if
-
-      //Delete the table and close the connection
-      // to the database
-      stmt.executeUpdate("DROP TABLE myTable");
-      con.close();
+   long end_time=System.currentTimeMillis();
+		
+System.out.println(" Total Time is :"+(end_time-start_time));
     }catch( Exception e ) {
       e.printStackTrace();
     }//end catch
   }//end main
-}//end class Jdbc10
+}//end class 
