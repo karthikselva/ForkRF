@@ -1,0 +1,17 @@
+								Welcome To ForkRF :
+
+"  ForkRF aims to parrellize the Random Forest code inorder to get higher performance "
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+i) Here large data sets say KDDCUP99.CORRECTED.data of 718 MB is splitted in 2.5 MB 
+ii) This is done by SplitString.java
+iii) Split.java is character spliiter (Very slower )
+iv) SplitRF.java uses WEKA random forest library 
+v) Logs the output of each spliited datasets
+vi) Then Transmitter transmits the splitted files to various distributed systems
+vii) Recever receive sthe file computes the RF and returns back the result 
+
+Proposed works : Extending the Random Forest and splitting with JCUDA programming ( 40 times faster than existing code ;-) )
+
+Thanks for your Interest !

@@ -1,0 +1,1 @@
+java SplitString E:/ForkRF/kddcup.data.corrected 20000
