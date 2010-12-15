@@ -30,33 +30,33 @@ c	CONTROL PARAMETERS
 c
 	parameter(
 c  		DESCRIBE DATA		
-     1		mdim=9, ntrain=214, nclass=6, maxcat=1,
-     1		ntest=0, labelts=0, labeltr=1,
+     1		mdim=9,ntrain=214,nclass=6,maxcat=1,
+     1		ntest=0,labelts=0,labeltr=1,
 c
 c		SET RUN PARAMETERS
-     2		mtry0=2, ndsize=1, jbt=500, look=100, lookcls=1,
-     2		jclasswt=0, mdim2nd=0, mselect=0, 
+     2		mtry0=2,ndsize=1,jbt=500,look=100,lookcls=1,
+     2		jclasswt=0,mdim2nd=0,mselect=0,
 c
 c		SET IMPORTANCE OPTIONS	
-     3		imp=1, interact=1, impn=1, 
+     3		imp=1,interact=0,impn=1,
 c
 c		SET PROXIMITY COMPUTATIONS
-     4		nprox=1, nrnn=214,
+     4		nprox=1,nrnn=ntrain,
 c
 c		SET OPTIONS BASED ON PROXIMITIES
-     5		noutlier=0, nscale=3, nprot=2,
+     5		noutlier=0,nscale=0,nprot=0,
 c
 c		REPLACE MISSING VALUES  
-     6		code=-999, missfill=0, 
+     6		code=-999,missfill=0,
 c
 c		GRAPHICS
-     7		iviz=1,
+     7		iviz=0,
 c
 c		SAVING A FOREST
-     8		isaverf=0, isavepar=0, isavefill=0, isaveprox=0,
+     8		isaverf=0,isavepar=0,isavefill=0,isaveprox=0,
 c
 c		RUNNING A SAVED FOREST
-     9		irunrf=0, ireadpar=0, ireadfill=0, ireadprox=0)
+     9		irunrf=0,ireadpar=0,ireadfill=0,ireadprox=0)
 c
 c	-------------------------------------------------------
 c	OUTPUT CONTROLS	
@@ -70,10 +70,10 @@ c
      &		impout=		0,!0/1/2 	1=imp,2=to screen(9)
      &		impnout=	0,!0/1		1=impn		(10)
      &		interout=	0,!0/1/2	1=interaction,2=screen(11)
-     &		iprotout=	0,!0/1/2	1=prototypes,2=screen(12)
+     &		iprotout=	1,!0/1/2	1=prototypes,2=screen(12)
      &		iproxout=	1,!0/1/2	1=prox,2=adds test(13)
      &		iscaleout=	0,!0/1		1=scaling coors	(14)
-     &		ioutlierout=	0) !0/1/2	1=train,2=adds test (15)
+     &		ioutlierout=	1) !0/1/2	1=train,2=adds test (15)
 c
 c	-------------------------------------------------------
 c	DERIVED PARAMETERS (DO NOT CHANGE)
@@ -216,18 +216,24 @@ c
 c	-------------------------------------------------------
 c	READ IN DATA--SEE MANUAL FOR FORMAT
 c
-	open(16, file='../../../Data/glass.data', status='old')
+	open(16, file='data.train', status='old')
 	do n=1,ntrain
 		read(16,*) (x(m,n),m=1,mdim),cl(n)
 	enddo
 	close(16)
-	if(ntest.gt.1) then
+	if(ntest.gt.0) then
 		open(17, file='data.test', status='old')
-		do n=1,ntest0
-			read(17,*) (xts(m,n),m=1,mdim),clts(n)
-		end do
+		if(labelts.ne.0) then
+			do n=1,ntest0
+				read(17,*) (xts(m,n),m=1,mdim),clts(n)
+			enddo
+		else
+			do n=1,ntest0
+				read(17,*) (xts(m,n),m=1,mdim)
+			enddo
+		endif
 		close(17)
-	end if
+	endif
 c
 c	-------------------------------------------------------
 c	SELECT SUBSET OF VARIABLES TO USE
@@ -238,13 +244,13 @@ c
 			msm(k)=k
 		enddo
 	endif
-c	if (mselect.eq.1) then
+	if (mselect.eq.1) then
 c		fill in which variables 
 c		mdimt=
 c		msm(1)=
 c		---
 c		msm(mdimt)=
-c	endif
+	endif
 c
 c	-------------------------------------------------------
 c	SET CATEGORICAL VALUES
@@ -259,21 +265,17 @@ c	enddo
 c
 c	-------------------------------------------------------
 c	SET CLASS WEIGHTS
-c
-	do j=1,nclass
-		classwt(j)=1
-	enddo
-c	if(jclasswt.eq.1) then
+
+	if(jclasswt.eq.0) then
+		do j=1,nclass
+			classwt(j)=1
+		enddo
+	endif
+	if(jclasswt.eq.1) then
 c		fill in classwt(j) for each j:
 c		classwt(1)=1.
 c		classwt(2)=10.
-c	endif
-		classwt(1) = 214/70.0
-		classwt(2) = 214/76.0
-		classwt(3) = 214/17.0
-		classwt(4) = 214/13.0
-		classwt(5) = 214/9.0
-		classwt(6) = 214/29.0
+	endif
 c
 c	=======================================================
 c	**************  END OF USER INPUT  ********************
@@ -1590,7 +1592,7 @@ c		generate random split
 			critmax=tdec
 			nhit=1
 			do k=1,lcat
-				ncatsplit(k)=icat(i)
+				ncatsplit(k)=icat(k)
 			enddo
 		endif
 	enddo
@@ -3381,7 +3383,7 @@ C**************************************************************************
 *			   the array for the state vector
 	common /block/mti,mt
 	save   /block/
-*	data   mti/n1/
+	data   mti/n1/
 *			   mti==n+1 means mt[n] is not initialized
 *
 	dimension mag01(0:1)
